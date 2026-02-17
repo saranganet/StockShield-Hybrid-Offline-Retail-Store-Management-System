@@ -1,0 +1,1 @@
+# StockShield-Hybrid-Offline-Retail-Store-Management-System
