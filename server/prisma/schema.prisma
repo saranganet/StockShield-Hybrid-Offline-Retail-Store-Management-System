@@ -60,15 +60,16 @@ model Category {
 }
 
 model Product {
-  id             String          @id @default(uuid())
-  name           String
-  price          Decimal
-  stockQuantity  Int             @default(0)
-  categoryId     String
-  category       Category        @relation(fields: [categoryId], references: [id])
-  updatedAt      DateTime        @updatedAt
-  invoiceItems   InvoiceItem[]
-  stockMovements StockMovement[]
+  id                String              @id @default(uuid())
+  name              String
+  price             Decimal
+  stockQuantity     Int                 @default(0)
+  categoryId        String
+  category          Category            @relation(fields: [categoryId], references: [id])
+  updatedAt         DateTime            @updatedAt
+  invoiceItems      InvoiceItem[]
+  stockMovements    StockMovement[]
+  purchaseOrderItems PurchaseOrderItem[]
 
   @@map("products")
 }
@@ -121,14 +122,27 @@ model Payment {
 }
 
 model PurchaseOrder {
-  id          String      @id @default(uuid())
-  supplierId  String
-  supplier    Supplier    @relation(fields: [supplierId], references: [id])
-  totalAmount Decimal
-  status      OrderStatus @default(CREATED)
-  createdAt   DateTime    @default(now())
+  id                 String              @id @default(uuid())
+  supplierId         String
+  supplier           Supplier            @relation(fields: [supplierId], references: [id])
+  totalAmount        Decimal
+  status             OrderStatus         @default(CREATED)
+  createdAt          DateTime            @default(now())
+  purchaseOrderItems PurchaseOrderItem[]
 
   @@map("purchase_orders")
+}
+
+model PurchaseOrderItem {
+  id              String        @id @default(uuid())
+  purchaseOrderId String
+  purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+  productId       String
+  product         Product       @relation(fields: [productId], references: [id])
+  quantity        Int
+  unitCost        Decimal
+
+  @@map("purchase_order_items")
 }
 
 model StockMovement {
