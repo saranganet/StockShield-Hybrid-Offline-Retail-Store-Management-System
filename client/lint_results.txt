@@ -1,0 +1,126 @@
+
+> client@0.0.0 lint
+> eslint .
+
+
+/Users/sohamsaranga/Desktop/sesd/StockShield-Hybrid-Offline-Retail-Store-Management-System/client/src/App.tsx
+  27:14  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+/Users/sohamsaranga/Desktop/sesd/StockShield-Hybrid-Offline-Retail-Store-Management-System/client/src/App.tsx:27:14
+  25 |           path="/dashboard" 
+  26 |           element={
+> 27 |             <PrivateRoute>
+     |              ^^^^^^^^^^^^ This component is created during render
+  28 |               <MainLayout />
+  29 |             </PrivateRoute>
+  30 |           }
+
+/Users/sohamsaranga/Desktop/sesd/StockShield-Hybrid-Offline-Retail-Store-Management-System/client/src/App.tsx:12:24
+  10 |
+  11 | function App() {
+> 12 |   const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
+     |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 13 |     const token = localStorage.getItem('token');
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 14 |     return token ? <>{children}</> : <Navigate to="/login" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 15 |   };
+     | ^^^^ The component is created during render here
+  16 |
+  17 |   return (
+  18 |     <Router>  react-hooks/static-components
+
+/Users/sohamsaranga/Desktop/sesd/StockShield-Hybrid-Offline-Retail-Store-Management-System/client/src/pages/CategoriesPage.tsx
+   6:48  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         @typescript-eslint/no-explicit-any
+  23:5   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/sohamsaranga/Desktop/sesd/StockShield-Hybrid-Offline-Retail-Store-Management-System/client/src/pages/CategoriesPage.tsx:23:5
+  21 |
+  22 |   useEffect(() => {
+> 23 |     fetchCategories();
+     |     ^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  24 |   }, []);
+  25 |
+  26 |   const handleAddCategory = async (e: React.FormEvent) => {  react-hooks/set-state-in-effect
+
+/Users/sohamsaranga/Desktop/sesd/StockShield-Hybrid-Offline-Retail-Store-Management-System/client/src/pages/LoginPage.tsx
+  22:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/sohamsaranga/Desktop/sesd/StockShield-Hybrid-Offline-Retail-Store-Management-System/client/src/pages/ProductsPage.tsx
+   6:44  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-explicit-any
+   7:48  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-explicit-any
+  35:5   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/sohamsaranga/Desktop/sesd/StockShield-Hybrid-Offline-Retail-Store-Management-System/client/src/pages/ProductsPage.tsx:35:5
+  33 |
+  34 |   useEffect(() => {
+> 35 |     fetchData();
+     |     ^^^^^^^^^ Avoid calling setState() directly within an effect
+  36 |   }, []);
+  37 |
+  38 |   const handleAddProduct = async (e: React.FormEvent) => {  react-hooks/set-state-in-effect
+
+/Users/sohamsaranga/Desktop/sesd/StockShield-Hybrid-Offline-Retail-Store-Management-System/client/src/pages/RegisterPage.tsx
+  20:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/sohamsaranga/Desktop/sesd/StockShield-Hybrid-Offline-Retail-Store-Management-System/client/src/pages/SalesPage.tsx
+   25:5   error  Error: Cannot access variable before it is declared
+
+`fetchProducts` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+/Users/sohamsaranga/Desktop/sesd/StockShield-Hybrid-Offline-Retail-Store-Management-System/client/src/pages/SalesPage.tsx:25:5
+  23 |
+  24 |   useEffect(() => {
+> 25 |     fetchProducts();
+     |     ^^^^^^^^^^^^^ `fetchProducts` accessed before it is declared
+  26 |   }, []);
+  27 |
+  28 |   const fetchProducts = async () => {
+
+/Users/sohamsaranga/Desktop/sesd/StockShield-Hybrid-Offline-Retail-Store-Management-System/client/src/pages/SalesPage.tsx:28:3
+  26 |   }, []);
+  27 |
+> 28 |   const fetchProducts = async () => {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 29 |     try {
+     | ^^^^^^^^^
+> 30 |       setLoading(true);
+     …
+     | ^^^^^^^^^
+> 37 |     }
+     | ^^^^^^^^^
+> 38 |   };
+     | ^^^^^ `fetchProducts` is declared here
+  39 |
+  40 |   const addToCart = (product: Product) => {
+  41 |     setCart((prev) => {  react-hooks/immutability
+   90:21  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @typescript-eslint/no-explicit-any
+  197:62  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @typescript-eslint/no-explicit-any
+
+/Users/sohamsaranga/Desktop/sesd/StockShield-Hybrid-Offline-Retail-Store-Management-System/client/src/services/api.ts
+  27:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  33:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 13 problems (13 errors, 0 warnings)
+
+npm error Lifecycle script `lint` failed with error:
+npm error code 1
+npm error path /Users/sohamsaranga/Desktop/sesd/StockShield-Hybrid-Offline-Retail-Store-Management-System/client
+npm error workspace client@0.0.0
+npm error location /Users/sohamsaranga/Desktop/sesd/StockShield-Hybrid-Offline-Retail-Store-Management-System/client
+npm error command failed
+npm error command sh -c eslint .
