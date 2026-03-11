@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { SalesService } from "../services/SalesService";
+import { AuthRequest } from "../middlewares/authMiddleware";
 
 export class SalesController {
   private salesService: SalesService;
@@ -26,11 +27,22 @@ export class SalesController {
     }
   };
 
-  create = async (req: Request, res: Response) => {
+  getStats = async (req: Request, res: Response) => {
     try {
-      // In a real app, userId would come from the auth middleware (jwt)
-      // For now, we'll expect it in the body or use a dummy one if not provided
-      const userId = req.body.userId || "dummy-user-id"; 
+      const stats = await this.salesService.getDashboardStats();
+      res.json(stats);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
+  create = async (req: AuthRequest, res: Response) => {
+    try {
+      if (!req.user) {
+        res.status(401).json({ error: "Unauthorized" });
+        return;
+      }
+      const userId = req.user.id;
       
       const sale = await this.salesService.processSale(userId, req.body);
       res.status(201).json(sale);
