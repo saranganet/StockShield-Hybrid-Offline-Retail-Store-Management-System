@@ -16,7 +16,7 @@ export class SalesService {
   }
 
   async getAllSales() {
-    return await this.salesInvoiceRepository.findAll();
+    return await this.salesInvoiceRepository.findAllWithDetails();
   }
 
   async getSaleById(id: string) {
@@ -68,7 +68,7 @@ export class SalesService {
         });
 
         invoiceItems.push({
-          productId: item.productId,
+          product: { connect: { id: item.productId } },
           quantity: item.quantity,
           unitPrice: unitPrice
         });
@@ -108,5 +108,45 @@ export class SalesService {
 
       return invoice;
     });
+  }
+
+  async getDashboardStats() {
+    const salesInvoices = await prisma.salesInvoice.aggregate({
+      _sum: { totalAmount: true }
+    });
+    
+    // Orders (From PurchaseOrders)
+    const pendingOrders = await prisma.purchaseOrder.count({ where: { status: 'CREATED' } });
+    const receivedOrders = await prisma.purchaseOrder.count({ where: { status: 'RECEIVED' } });
+    
+    // Stock (Products)
+    const totalProductsCount = await prisma.product.count();
+    const lowStockItems = await prisma.product.count({ where: { stockQuantity: { lt: 10, gt: 0 } } });
+    const outOfStockItems = await prisma.product.count({ where: { stockQuantity: 0 } });
+    const inStockItems = await prisma.product.aggregate({ _sum: { stockQuantity: true } });
+
+    // Recent Products for Table
+    const recentProducts = await prisma.product.findMany({
+      take: 5,
+      orderBy: { updatedAt: 'desc' },
+      include: { category: true }
+    });
+    
+    return {
+      totalSales: Number(salesInvoices._sum.totalAmount || 0),
+      orders: {
+        pending: pendingOrders,
+        completed: receivedOrders,
+        total: pendingOrders + receivedOrders
+      },
+      stock: {
+        totalItems: totalProductsCount,
+        inStock: totalProductsCount - lowStockItems - outOfStockItems,
+        lowStock: lowStockItems,
+        outOfStock: outOfStockItems,
+        totalVolume: inStockItems._sum.stockQuantity || 0
+      },
+      recentProducts
+    };
   }
 }
