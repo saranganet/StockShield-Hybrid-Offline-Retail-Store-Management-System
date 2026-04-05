@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Shield, Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import ThreeBackground from '../components/ThreeBackground';
 
 const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -27,6 +28,8 @@ const LoginPage: React.FC = () => {
   };
 
   return (
+    <>
+    <ThreeBackground />
     <div className="auth-container">
       <div className="auth-card glass animate-fade-in">
         <div className="logo-container">
@@ -85,6 +88,7 @@ const LoginPage: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
