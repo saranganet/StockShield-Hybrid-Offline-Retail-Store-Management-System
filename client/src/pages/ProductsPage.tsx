@@ -32,6 +32,7 @@ const ProductsPage: React.FC = () => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchData();
   }, []);
 
@@ -105,7 +106,7 @@ const ProductsPage: React.FC = () => {
             
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div className="input-group">
-                <label>Price ($)</label>
+                <label>Price (₹)</label>
                 <input 
                   type="number" 
                   step="0.01"
@@ -194,7 +195,7 @@ const ProductsPage: React.FC = () => {
                           {prod.category?.name || 'N/A'}
                         </span>
                       </td>
-                      <td style={{ padding: '16px', fontWeight: 600 }}>${parseFloat(prod.price).toFixed(2)}</td>
+                      <td style={{ padding: '16px', fontWeight: 600 }}>₹{parseFloat(prod.price).toFixed(2)}</td>
                       <td style={{ padding: '16px' }}>
                         <span style={{ color: prod.stockQuantity < 10 ? 'var(--error)' : 'var(--success)', fontWeight: 600 }}>
                           {prod.stockQuantity}
