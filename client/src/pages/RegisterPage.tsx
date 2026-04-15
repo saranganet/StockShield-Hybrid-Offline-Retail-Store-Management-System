@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Shield, Mail, Lock, User, ArrowRight, Loader2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import ThreeBackground from '../components/ThreeBackground';
 
 const RegisterPage: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
@@ -25,6 +26,8 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
+    <>
+    <ThreeBackground />
     <div className="auth-container">
       <div className="auth-card glass animate-fade-in">
         <div className="logo-container">
@@ -99,6 +102,7 @@ const RegisterPage: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
