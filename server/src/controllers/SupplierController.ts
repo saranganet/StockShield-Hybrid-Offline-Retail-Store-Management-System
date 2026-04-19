@@ -19,7 +19,7 @@ export class SupplierController {
 
   getById = async (req: Request, res: Response) => {
     try {
-      const supplier = await this.supplierService.getSupplierById(req.params.id!);
+      const supplier = await this.supplierService.getSupplierById(req.params.id as string);
       res.json(supplier);
     } catch (error: any) {
       res.status(404).json({ error: error.message });
@@ -37,7 +37,7 @@ export class SupplierController {
 
   update = async (req: Request, res: Response) => {
     try {
-      const supplier = await this.supplierService.updateSupplier(req.params.id!, req.body);
+      const supplier = await this.supplierService.updateSupplier(req.params.id as string, req.body);
       res.json(supplier);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
@@ -46,7 +46,7 @@ export class SupplierController {
 
   delete = async (req: Request, res: Response) => {
     try {
-      await this.supplierService.deleteSupplier(req.params.id!);
+      await this.supplierService.deleteSupplier(req.params.id as string);
       res.status(204).send();
     } catch (error: any) {
       res.status(400).json({ error: error.message });

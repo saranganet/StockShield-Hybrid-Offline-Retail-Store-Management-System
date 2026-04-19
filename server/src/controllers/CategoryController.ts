@@ -19,7 +19,7 @@ export class CategoryController {
 
   getById = async (req: Request, res: Response) => {
     try {
-      const category = await this.categoryService.getCategoryById(req.params["id"]!);
+      const category = await this.categoryService.getCategoryById(req.params["id"] as string);
       res.json(category);
     } catch (error: any) {
       res.status(404).json({ error: error.message });
@@ -37,7 +37,7 @@ export class CategoryController {
 
   update = async (req: Request, res: Response) => {
     try {
-      const category = await this.categoryService.updateCategory(req.params["id"]!, req.body);
+      const category = await this.categoryService.updateCategory(req.params["id"] as string, req.body);
       res.json(category);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
@@ -46,7 +46,7 @@ export class CategoryController {
 
   delete = async (req: Request, res: Response) => {
     try {
-      await this.categoryService.deleteCategory(req.params["id"]!);
+      await this.categoryService.deleteCategory(req.params["id"] as string);
       res.status(204).send();
     } catch (error: any) {
       res.status(400).json({ error: error.message });

@@ -19,7 +19,7 @@ export class ProductController {
 
   getById = async (req: Request, res: Response) => {
     try {
-      const product = await this.productService.getProductById(req.params["id"]!);
+      const product = await this.productService.getProductById(req.params["id"] as string);
       res.json(product);
     } catch (error: any) {
       res.status(404).json({ error: error.message });
@@ -37,7 +37,7 @@ export class ProductController {
 
   update = async (req: Request, res: Response) => {
     try {
-      const product = await this.productService.updateProduct(req.params["id"]!, req.body);
+      const product = await this.productService.updateProduct(req.params["id"] as string, req.body);
       res.json(product);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
@@ -46,7 +46,7 @@ export class ProductController {
 
   delete = async (req: Request, res: Response) => {
     try {
-      await this.productService.deleteProduct(req.params["id"]!);
+      await this.productService.deleteProduct(req.params["id"] as string);
       res.status(204).send();
     } catch (error: any) {
       res.status(400).json({ error: error.message });

@@ -20,7 +20,7 @@ export class SalesController {
 
   getById = async (req: Request, res: Response) => {
     try {
-      const sale = await this.salesService.getSaleById(req.params["id"]!);
+      const sale = await this.salesService.getSaleById(req.params["id"] as string);
       res.json(sale);
     } catch (error: any) {
       res.status(404).json({ error: error.message });

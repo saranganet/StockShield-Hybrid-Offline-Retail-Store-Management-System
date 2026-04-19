@@ -20,7 +20,7 @@ export class PurchaseOrderController {
 
   getById = async (req: Request, res: Response) => {
     try {
-      const po = await this.poService.getById(req.params.id!);
+      const po = await this.poService.getById(req.params.id as string);
       res.json(po);
     } catch (error: any) {
       res.status(404).json({ error: error.message });
@@ -43,7 +43,7 @@ export class PurchaseOrderController {
         res.status(401).json({ error: "Unauthorized" });
         return;
       }
-      const po = await this.poService.markAsReceived(req.params.id!, req.user.id);
+      const po = await this.poService.markAsReceived(req.params.id as string, req.user.id);
       res.json(po);
     } catch (error: any) {
       res.status(400).json({ error: error.message });

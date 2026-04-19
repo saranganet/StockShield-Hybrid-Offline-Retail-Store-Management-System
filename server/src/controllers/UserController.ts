@@ -18,7 +18,7 @@ export class UserController {
     try {
       const { role } = req.body;
       const user = await prisma.user.update({
-        where: { id: req.params.id },
+        where: { id: req.params.id as string },
         data: { role },
         select: { id: true, name: true, email: true, role: true }
       });
