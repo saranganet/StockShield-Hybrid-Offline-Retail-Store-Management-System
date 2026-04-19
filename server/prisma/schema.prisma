@@ -1,0 +1,154 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  STAFF
+}
+
+enum SyncStatus {
+  PENDING
+  SYNCED
+}
+
+enum PaymentMethod {
+  CASH
+  UPI
+  CARD
+}
+
+enum OrderStatus {
+  CREATED
+  RECEIVED
+}
+
+enum MovementType {
+  IN
+  OUT
+}
+
+model User {
+  id            String         @id @default(uuid())
+  name          String
+  email         String         @unique
+  passwordHash  String
+  role          Role           @default(STAFF)
+  isActive      Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  salesInvoices SalesInvoice[]
+  auditLogs     AuditLog[]
+
+  @@map("users")
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now())
+  products  Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id             String          @id @default(uuid())
+  name           String
+  price          Decimal
+  stockQuantity  Int             @default(0)
+  categoryId     String
+  category       Category        @relation(fields: [categoryId], references: [id])
+  updatedAt      DateTime        @updatedAt
+  invoiceItems   InvoiceItem[]
+  stockMovements StockMovement[]
+
+  @@map("products")
+}
+
+model Supplier {
+  id             String          @id @default(uuid())
+  name           String
+  contactInfo    String
+  createdAt      DateTime        @default(now())
+  purchaseOrders PurchaseOrder[]
+
+  @@map("suppliers")
+}
+
+model SalesInvoice {
+  id           String        @id @default(uuid())
+  userId       String
+  user         User          @relation(fields: [userId], references: [id])
+  totalAmount  Decimal
+  syncStatus   SyncStatus    @default(SYNCED)
+  createdAt    DateTime      @default(now())
+  invoiceItems InvoiceItem[]
+  payments     Payment[]
+
+  @@map("sales_invoices")
+}
+
+model InvoiceItem {
+  id        String       @id @default(uuid())
+  invoiceId String
+  invoice   SalesInvoice @relation(fields: [invoiceId], references: [id])
+  productId String
+  product   Product      @relation(fields: [productId], references: [id])
+  quantity  Int
+  unitPrice Decimal
+
+  @@map("invoice_items")
+}
+
+model Payment {
+  id         String        @id @default(uuid())
+  invoiceId  String
+  invoice    SalesInvoice  @relation(fields: [invoiceId], references: [id])
+  amount     Decimal
+  method     PaymentMethod
+  syncStatus SyncStatus    @default(SYNCED)
+  paidAt     DateTime      @default(now())
+
+  @@map("payments")
+}
+
+model PurchaseOrder {
+  id          String      @id @default(uuid())
+  supplierId  String
+  supplier    Supplier    @relation(fields: [supplierId], references: [id])
+  totalAmount Decimal
+  status      OrderStatus @default(CREATED)
+  createdAt   DateTime    @default(now())
+
+  @@map("purchase_orders")
+}
+
+model StockMovement {
+  id           String       @id @default(uuid())
+  productId    String
+  product      Product      @relation(fields: [productId], references: [id])
+  quantity     Int
+  movementType MovementType
+  createdAt    DateTime     @default(now())
+
+  @@map("stock_movements")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  action    String
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@map("audit_logs")
+}

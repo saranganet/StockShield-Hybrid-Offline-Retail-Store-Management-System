@@ -1,0 +1,25 @@
+{
+  "name": "stockshield-hybrid-offline-retail-store-management-system",
+  "version": "1.0.0",
+  "description": "StockShield is a full-stack retail store management system designed for small and medium shops.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saranganet/StockShield-Hybrid-Offline-Retail-Store-Management-System.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/saranganet/StockShield-Hybrid-Offline-Retail-Store-Management-System/issues"
+  },
+  "homepage": "https://github.com/saranganet/StockShield-Hybrid-Offline-Retail-Store-Management-System#readme",
+  "workspaces": [
+    "server",
+    "client"
+  ]
+}
