@@ -99,10 +99,10 @@ export class SalesService {
         data: {
           userId,
           action: "CREATE_SALE",
-          metadata: {
+          metadata: JSON.stringify({
             invoiceId: invoice.id,
             totalAmount
-          }
+          })
         }
       });
 
