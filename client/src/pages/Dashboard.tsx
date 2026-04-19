@@ -83,7 +83,6 @@ const Dashboard: React.FC = () => {
             color: 'var(--error)',
             cursor: 'pointer',
             transition: 'var(--transition)',
-            width: '100%',
             fontWeight: 500,
             position: 'absolute',
             bottom: '24px',
